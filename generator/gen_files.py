@@ -8,7 +8,10 @@ import pandas as pd
 from sqlalchemy import create_engine, Integer, DateTime, table, dialects, column
 
 # Коннектимся к ПОСТгресу
-ENGINE = create_engine('postgresql://back:123@192.168.1.24:5432/course')
+USERNAME=''
+PASSWORD=''
+IP=''
+ENGINE = create_engine(f'postgresql://{USERNAME}:{PASSWORD}@{IP}:5432/course')
 CONN = ENGINE.connect()
 
 # Структура таблицы. Это нам еще пригодится
