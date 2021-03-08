@@ -1,5 +1,5 @@
 '''
-Обработчик данных. Читает данные из Postgres, сохраняет агрегированные в hdfs 
+Обработчик данных. Читает данные из Postgres, сохраняет агрегированные в hdfs
 '''
 
 from pyspark import SparkConf, SparkContext

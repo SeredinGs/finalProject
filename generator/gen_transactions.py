@@ -1,18 +1,21 @@
 '''Генератор данных. Генеририрует исторические и "живые" данные.'''
-# TODO продумать ООП реализацию
 
+import sys
+sys.path.append('..')
+from src.POSTgressor import postgressor
 from datetime import timedelta, datetime
-import time
 import numpy as np
 import pandas as pd
-from sqlalchemy import create_engine, Integer, DateTime, table, dialects, column
+from sqlalchemy import table, column
 
-# Коннектимся к ПОСТгресу
-USERNAME=''
-PASSWORD=''
-IP=''
-ENGINE = create_engine(f'postgresql://{USERNAME}:{PASSWORD}@{IP}:5432/course')
-CONN = ENGINE.connect()
+
+# читаем данные по постгресу
+dbdata = open('transactions.txt', 'r').readlines()
+IP = dbdata[0][:-1]
+scheme = dbdata[1]
+tabl = dbdata[3]
+user = dbdata[4][:-1]
+pwd = dbdata[5]
 
 # Структура таблицы. Это нам еще пригодится
 TR = table("transactions",
@@ -60,26 +63,11 @@ DF = pd.DataFrame({'user': USRS, 'event': EVTS, 'sum': MON}, index=DATESNP)
 DF_HIST = DF[:CURRENTTIME]
 DF_FUT = DF[CURRENTTIME:]
 
-
-# пишем в postgres
-# история пишется примерно 20 минут
-DF_HIST.to_sql(
-    name='transactions',
-    schema='course',
-    con=ENGINE,
-    if_exists='replace',
-    index=True,
-    index_label='date',
-    dtype={
-        'date': DateTime(),
-        'user': Integer(),
-        'event': Integer(),
-        'sum': Integer()})
-
+# инициализируем модуль записи в ПОСТгресс
+worker = postgressor(ip=IP,schema=scheme,dbname=scheme,schemtable=TR,table=tabl, user=user,pwd=pwd)
+# пишем историю
+worker.writeTrans(DF_HIST)
 print('История записана')
-
-# Пишем актуальные данные
-for row in DF_FUT.to_dict('records'):
-    time.sleep(10)
-    a = dialects.postgresql.insert(TR, values=row)
-    CONN.execute(a)
+# пишем текущие данные
+input('пресс энтер ту кантинуэ')
+worker.writeCurr(DF_FUT)
