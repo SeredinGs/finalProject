@@ -10,7 +10,7 @@ def payload(user,special,amount,percent,term):
         .appName("Python Spark SQL basic example") \
         .config("spark.some.config.option", "some-value") \
         .getOrCreate()
-    sc = SparkContext()
+    sc = SparkContext.getOrCreate()
     modelka = mdl.load('./models/amounts.model')
     json = f'{"user":{user}, "special":{special}, "amount":{amount}, "percent":{percent}, "term":{term}}'
     va = VectorAssembler(inputCols=['user','special','amount','percent','term'], outputCol="features")

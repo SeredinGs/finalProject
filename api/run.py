@@ -39,8 +39,7 @@ def predict():
         else:
             return {'text': f'Выдаем кредит! Уверенно'}
     else:
-        data = [json_input['user'],json_input['special'],json_input['amount'],json_input['percent'],json_input['term']]
-        return payload(*data)
+        return payload(str(json_input))
 
 
 @app.errorhandler(Exception)
