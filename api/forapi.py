@@ -20,3 +20,10 @@ va = VectorAssembler(inputCols=['user', 'summa'], outputCol="features")
 modelka = KMeansModel.load('./models/clusters.model')
 
 result = modelka.transform(va.transform(df1)).select('prediction').take(1)[0][0]
+
+
+
+
+# Проверка на новенького.
+# Если страый юзер - тянем монгу
+# Иначе поднимаем мини-инстанс.

@@ -21,7 +21,8 @@ test = va.transform(testData)
 # Fit the model
 lrModel = lr.fit(feat)
 lrModel.save('./models/amounts.model')
-# pred = lrModel.predict(test.drop('Approved'))
+# pred = lrModel.transform(test)
+#
 
 
 """

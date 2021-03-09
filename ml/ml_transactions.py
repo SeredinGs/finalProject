@@ -18,7 +18,7 @@ feat = va.transform(df)
 model = kmeans.fit(feat)
 # model.save('./models/clusters.model')
 
-pred = model.transform(feat).select('user')
+pred = model.transform(feat).select('user','prediction')
 
 pred.write.format("mongo").mode("overwrite").option("database",
 "course").option("collection", "prediction").option("uri",
