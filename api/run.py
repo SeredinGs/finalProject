@@ -39,7 +39,11 @@ def predict():
         else:
             return {'text': f'Выдаем кредит! Уверенно'}
     else:
-        return payload(str(json_input))
+        status = int(payload(str(json_input)))
+        if status == 0:
+            return {'text': f'Не выдаем кредит!'}
+        if status == 1:
+            return {'text': f'Выдаем кредит! Уверенно'}
 
 
 @app.errorhandler(Exception)
