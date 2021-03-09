@@ -7,7 +7,7 @@ from logging.handlers import RotatingFileHandler
 from time import strftime, time
 import logging
 import traceback
-from pymongo import MongoClient, DESCENDING
+from src.ml_api import payload
 from flask import Flask, request, jsonify
 
 
@@ -32,9 +32,15 @@ def predict():
     json_input = request.json
     user, pred = mongoconnector(json_input['user'])
     if user!=0000:
-        return {'user':user, 'pred': pred}
+        if pred == 0:
+            return {'text': f'Не выдаем кредит!'}
+        elif pred == 1:
+            return {'text': f'Выдаем кредит!..Но с осторожностью'}
+        else:
+            return {'text': f'Выдаем кредит! Уверенно'}
     else:
-        return {'text': 'с этого момента поподробнее'}
+        data = [json_input['user'],json_input['special'],json_input['amount'],json_input['percent'],json_input['term']]
+        return payload(*data)
 
 
 @app.errorhandler(Exception)
@@ -53,5 +59,5 @@ def exceptions(e):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0')
 
