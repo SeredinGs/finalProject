@@ -4,7 +4,7 @@ from pyspark.sql import SparkSession
 from pyspark import SparkContext
 
 
-def payload(user,special,amount,percent,term):
+def payload(json):
     spark = SparkSession \
         .builder \
         .appName("Python Spark SQL basic example") \
@@ -12,7 +12,6 @@ def payload(user,special,amount,percent,term):
         .getOrCreate()
     sc = SparkContext.getOrCreate()
     modelka = mdl.load('./models/amounts.model')
-    json = f'{"user":{user}, "special":{special}, "amount":{amount}, "percent":{percent}, "term":{term}}'
     va = VectorAssembler(inputCols=['user','special','amount','percent','term'], outputCol="features")
     df = spark.read.json(sc.parallelize([json]))
     test = va.transform(df)
