@@ -55,10 +55,12 @@ DF_HIST = df[:8000]
 DF_FUT = df[8000:]
 
 # инициализируем модуль записи в ПОСТгресс
-worker = postgressor(ip=IP,schema=scheme,dbname=scheme,schemtable=TR,table=tabl, user=user,pwd=pwd)
+worker = postgressor(ip=IP,schema=scheme,dbname=scheme,schemtable=TR,table=tabl, user=user, pwd=pwd)
+
 # пишем историю
 worker.writeHist(DF_HIST)
 print('История записана')
+
 # пишем текущие данные
 input('пресс энтер ту кантинуэ')
 worker.writeCurr(DF_FUT)
