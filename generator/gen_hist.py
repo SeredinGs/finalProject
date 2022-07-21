@@ -9,7 +9,7 @@ from sqlalchemy import table, column
 # читаем данные по постгресу
 dbdata = open('amounts.txt', 'r').readlines()
 IP = dbdata[0][:-1]
-scheme = dbdata[1]
+scheme = dbdata[1][:-1]
 tabl = dbdata[3]
 user = dbdata[4][:-1]
 pwd = dbdata[5]
